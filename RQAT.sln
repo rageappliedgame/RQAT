@@ -1,0 +1,61 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RQAT", "RQAT\RQAT.csproj", "{C220C3DC-C219-48B0-A431-997287492B95}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F77D0ED8-0863-4DE5-A781-899F726668F5} = {F77D0ED8-0863-4DE5-A781-899F726668F5}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugins", "ProjectReaderPlugin\Plugins.csproj", "{F77D0ED8-0863-4DE5-A781-899F726668F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interfaces", "Interfaces\Interfaces.csproj", "{26F72D2B-9E46-4AE1-AB2F-572B92108350}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csproj", "{2FF486C0-5D62-43F0-814C-E62696A4BBB3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plugins.Shared", "Plugins.Shared\Plugins.Shared.csproj", "{B1D95AF8-612E-4722-9CA0-5FEC0A1CF211}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WixInstaller", "WixInstaller\WixInstaller.csproj", "{1F09D28A-6A40-4F17-B27E-F048F2D111CC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C220C3DC-C219-48B0-A431-997287492B95} = {C220C3DC-C219-48B0-A431-997287492B95}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C220C3DC-C219-48B0-A431-997287492B95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C220C3DC-C219-48B0-A431-997287492B95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C220C3DC-C219-48B0-A431-997287492B95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C220C3DC-C219-48B0-A431-997287492B95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F77D0ED8-0863-4DE5-A781-899F726668F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F77D0ED8-0863-4DE5-A781-899F726668F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F77D0ED8-0863-4DE5-A781-899F726668F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F77D0ED8-0863-4DE5-A781-899F726668F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26F72D2B-9E46-4AE1-AB2F-572B92108350}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26F72D2B-9E46-4AE1-AB2F-572B92108350}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26F72D2B-9E46-4AE1-AB2F-572B92108350}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26F72D2B-9E46-4AE1-AB2F-572B92108350}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2FF486C0-5D62-43F0-814C-E62696A4BBB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FF486C0-5D62-43F0-814C-E62696A4BBB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FF486C0-5D62-43F0-814C-E62696A4BBB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FF486C0-5D62-43F0-814C-E62696A4BBB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1D95AF8-612E-4722-9CA0-5FEC0A1CF211}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1D95AF8-612E-4722-9CA0-5FEC0A1CF211}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1D95AF8-612E-4722-9CA0-5FEC0A1CF211}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1D95AF8-612E-4722-9CA0-5FEC0A1CF211}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F09D28A-6A40-4F17-B27E-F048F2D111CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F09D28A-6A40-4F17-B27E-F048F2D111CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F09D28A-6A40-4F17-B27E-F048F2D111CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F09D28A-6A40-4F17-B27E-F048F2D111CC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3B44BB01-B8C1-458E-94E2-D5897F9E728C}
+	EndGlobalSection
+EndGlobal

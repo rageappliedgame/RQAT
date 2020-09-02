@@ -1,0 +1,273 @@
+﻿/*
+ * Copyright 2020 Open University of the Netherlands
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * This project has received funding from the European Union’s Horizon
+ * 2020 research and innovation programme under grant agreement No 644187.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+ 
+WARNING Plugins seem to be re-used, so take care with extra fields & methods.
+
+Plugins do not know each other.
+Plugins/Parameter pairs are executed only once (to prevent endless recursion).
+Plugins work at a certain level (and may examine lower level products).
+Plugins can schedule lower level plugins (be a tree node) or not (be a leaf).
+
+DONE) Remove separate CecilTest project
+DONE) DIFF UTILITY
+	http://www.mathertel.de/Diff/	An O(ND) Difference Algorithm and its Variations" by Eugene Myers Algorithmica Vol. 1 No. 2, 1986, p 251.
+	https://github.com/google/diff-match-patch
+	https://github.com/mmanela/diffplex
+	https://www.codeproject.com/articles/15323/a-generic-diff-patch-utility-written-in-c
+	http://wiki.c2.com/?DiffAlgorithm
+	http://www.ioplex.com/~miallen/libmba/dl/src/diff.c
+	https://en.wikipedia.org/wiki/Diff#External_links
+	https://en.wikipedia.org/wiki/Longest_common_subsequence_problem
+
+	https://rosettacode.org/wiki/Longest_common_subsequence
+	https://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Longest_common_subsequence
+
+	https://en.wikipedia.org/wiki/Diff (has example of output)
+
+DONE) Start using a layered IoC:
+		Models -> Readers (sln/csproj/static analysis using cecil,dynamic analysis usign reflection) -> Checks.
+		IoC can resolve the models on the readers.
+DONE) Added Java MetaDater approach of plugins calling each other for further processing partial results.
+DONE) Added MEF Support (seems more related to our problem and standard part of .Net 4).
+DONE) Move results dictionary (and thus above) to (I)Host.
+DONE) Add to a Git repository.
+DONE) CSharpDecompiler can detect assets. Portability is a bit harder (might be a combo of the correct asset manager being referenced and csproj info, i.e the .Net profile).
+DONE) Removed level
+DONE) Replaced separate parameters by Job (so we can find its Index).
+DONE) Added Excel Ouput.
+DONE) Insert newly scheduled Jobs directly after the parent (+already added Jobs) so order is correctly.
+DONE) Move public API detection into a plugin.
+DONE) Public API decompilation using Cecil/CSharpCode (imrpov
+DONE) Add .NETCORE support to SolutionAssetDetectionPlugin !!
+DONE) Remodel plugins into filetype ones (unify?). But what to do with specific assembly tests or project type tests (linked files) or git
+DONE) Cache decompiled code?
+DONE) Detect Interfaces used.
+DONE) Try to enumerate in such way the output is in a correct tree format as well.
+DONE) Sequence queue so output is a usable tree to generate a Excel Spreadsheet.
+DONE) Incorporate new NuGet creation code (escpecially the fixes made for filenames etc)
+DONE) Split processing per solution (each on a separate tab) !!
+DONE) Output documentation issues.
+DONE) Moved base plugin code into separate project.
+DONE) Removed BasePlugin* classes.
+DONE) Examening/enumerating Visual Studio Unit Test.
+DONE) Proof that Patching the Unit Test and replace calls to VS Assemblies works.
+DONE) Added Git Version Control Plugin (works on local directories and clone url's).
+DONE) Added git.exe detection (supports multiple versions, takes the first on the PATH).
+DONE) Added git version output into report.
+DONE) Add Assetmanager Assemblies so we can patch the csproj when missing. 
+      Fixing by rewriting csproj's with a reference to the assemblies in the Fixups Folder (currently the 3 flavors of the RageAssetManager).
+
+		Example:
+
+		<ItemGroup>
+			<Reference Include="RageAssetManager">
+				<HintPath>..\..\AssetManager\RageAssetManager\bin\Debug\RageAssetManager.dll</HintPath>
+			</Reference>y
+			<Reference Include="System" />
+			<Reference Include="System.Core" />
+			<Reference Include="System.Xml.Linq" />
+			<Reference Include="System.Xml" />
+		</ItemGroup>
+
+DONE) Fixed issue with extra PropertyGroup before the one containing the AssemblyName. Now use the first AssemblyName found in the PropertyGroup tags.
+DONE) Fixed Unit Test by testing it first (based on csproj) and if true, skip assembly tests like IsAsset.
+DONE) Skipping RageAssetManager projects from processing.
+DONE) Make patching of Unit Test work for all methods.
+DONE) Renamed BuildPlugin to Analysis Plugin.
+DONE) MSBuild fails in Analysis Plugin after the Unit Test Plugin has loaded the assembly to patch. 
+      Don't recurse for FileType.Projects & FileType.Assembly but only for FileType.UnitTest
+DONE) Conditional Compilation Symbol Check should check for Test projects (so work on assets only) !! The UnitTest fix also prevents this issue.
+
+ISSUE)	  !! When a local git repository is cloned (file: url to .git folder), the %temp%\RQAT_xxx folder 
+			 can\will contain a subfolder that holds the solotion file (see \temp\FormulaAsset for example).
+			 Seems to be caused by een older NuGet version part of VS 2017 15.7 but without having .Net 4.7.2.
+
+			 Install .NET Framework 4.7 or later
+			 Copy System.Runtime.InteropServices.RuntimeInformation.dll from msbuild directory to the same directory that NuGet.exe is in.
+
+			 Fixed by replacing c:\Program Files (x86)\NuGet\NuGet.exe by the latest version from https://www.nuget.org/downloads (v5.4.0)
+			 Link: https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
+
+----
+FAILURES) !! BmlNet fails.
+				Detected Assembly Project 'TrackerAsset_Portable_Portable.dll'. (twice and a demo)
+				AssemblyName/Namespace mismatch?
+				IWebServiceRequestAsync.cs errors.
+				Check for unloaded projects.
+FAILURES) !! sdk_unity fails.
+FAILURES) !! RealTimeArousalDetection fails.
+FAILURES) !! SpeechIO / Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a seems caused by decompiling a test suite.
+FAILURES) !! SpeechIO contains assetmanager all over the place, gets loaded twice.
+FAILURES) !! Dead code detection by recompiling generates false alerts because non-dead code is not alike
+				example:
+						empty = serializer.Serialize(nodeValue, format);
+						if (jsonValue.IsMatch(empty))
+				vs:
+						string text = serializer.Serialize(nodeValue, format);
+						if (jsonValue.IsMatch(text))
+
+				Minimal need some diff generating code.
+
+----
+
+ISSUE) !! Improve Public API decompilation (does not match the list of Cyclomatic Complexity).
+
+----
+
+ISSUE) !! Support for multiple assets in a single solution.
+ISSUE) !! Check if LOC should be per (public) method as well
+ISSUE) !! Add Assetmanager Assemblies so we can patch the csproj when missing. 
+		   But not replace (might need a 'nuget restore'):
+
+		  <ItemGroup>
+			<Reference Include="RageAssetManager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+			  <HintPath>..\packages\RageAssetManager.1.0.0\lib\net3.5\RageAssetManager.dll</HintPath>
+			</Reference>y
+		  </ItemGroup>
+
+		  Or (not sure how to fix these):
+
+		  <ItemGroup>
+			<ProjectReference Include="..\..\EPPlus\EPPlus\EPPlus.csproj">
+			  <Project>{7b288026-5502-4a39-bf41-77e086f3e4a3}</Project>
+			  <Name>EPPlus</Name>
+			</ProjectReference>
+		  </ItemGroup>
+
+ISSUE) !! Cleanup RQAT temp directories.
+
+----
+TODO) !! Should xml documentation plugin run on the full project only? 
+		 Now it's solution level and recompiles all projects resulting in duplicate or triplicate warnings.
+TODO) !! Check if Asset is RAGE compliant.
+TODO) !! Check and List external assemblies being used (see Form1.GetReferencesList) !!
+TODO) !! SolutionNuGetPlugin has no usable output yet if it finds a solution.
+----
+TODO) !! Centralize the two types of decompilations.
+----
+TODO) !! Redirect console output of Unit Tests to Excel?
+TODO) !! Look into support for the ExpectedException Attribute.
+----
+TODO) !! PublicApiDetectionPlugin: Add Properties?
+TODO) !! PublicApiDetectionPlugin: Add Indexers show up in props (use .Select) with duplicate keys?
+----
+TODO) !! Check also for version & dependency xml files (generate list of rage asset metadata fields).
+TODO) !! Check for copyright in sources?
+----
+TODO) !! Advanced - Output results of dead code detection (and remove the cecil/sharpdecompile related ones).
+TODO) !! Advanced - Check Singleton Pattern correctness.
+TODO) !! Advanced - Check Factory Pattern correctness.
+----
+TODO) !! Separate Warning plugin (for selected warnings, see cleanup code in XmlDocumentation)?
+         GameStorageClientAsset.cs(1295,10): warning CS1030: #warning: 'Json Specific Fixups Ahead!' [C:\Temp\NuGet\ClientSideGameStorageAsset\GameStorageClientAsset\GameStorageClientAsset.csproj]
+
+0) See https://www.codeproject.com/reference/720512/list-of-visual-studio-project-type-guids
+0) See https://docs.google.com/document/d/1C1YrbFUVpTBXajbtrC62aXru2om6dy5rClyknBj5zHU/edit#
+
+Checks to implement:
+------------------
+1) ISolutionPlugin Check git status (extra/to few files)
+2) ISolutionPlugin Check for files in git not used in the csproj files.
+3) IAssetPlugin Pattern detection (singleton/factory)
+4) IAssetPlugin API detection
+
+a) Some checks can have cfg files (like portability issue assemblies, bridge interfaces), others will be hardcoded (singleton/factory patterns).
+
+Issues:
+------------------
+
+2) How do we pass data to recursing plugins? Like a list of files in a project? Is this neccesary or do we just run all these code as csproj plugins?
+   We need a list of Project names & Project types and Frameworks (e.g Gamestorage,Asset,net47, Gamestorage,Asset,net35), or services in host to retrieve them?
+   Moved for example parsing of a csproj
+3) Reporting?
+
+
+Name								Works on	Recurses for			Purpose
+-----------------------------------	---------	--------------	--------------------------
+GitPlugin							Git Repo	Solution		Clones a Git Repository and locates and recurses for solutions.
+-----------------------------------	---------	--------------	--------------------------
+SolutionAssetDetectionPlugin		Solution					Checks which (net/portable/core) RAGE asset assemblies are present.
+SolutionNuGetPlugin					Solution					Tries to build a nupackage for the Assembly projects (using only (portable) RAGE assemblies & metadata).
+SolutionAssetDetectionPlugin		Solution	Project			Locates and recurses for Projects.
+-----------------------------------	---------	--------------	--------------------------
+ProjectAnalysisPlugin				Project						Builds with just default Warnings enabled.
+ProjectCodeAnalysisPlugin			Project						Builds with Code Analysis turned on.
+ProjectConditionalSymbolsPlugin		Project						Checks for the PORTABLE attribute in Portable/Core RAGE asset assemblies.
+ProjectOutputReaderPlugin			Project		Assembly		Determines the project output and recurses for it.
+ProjectXmlDocumentationPlugin		Project						Checks for XML Documentation issue.
+-----------------------------------	---------	--------------	--------------------------
+UnitTestPlugin						Assembly					Runs Microsoft Test and NUnit test suites.
+-----------------------------------	---------	--------------	--------------------------
+DeadCodeDetectionPlugin				Assembly					Dead Code Detection.
+																Seems like all code contains dead code related to variable declaration and initial values never used.
+																The decompiler changes names with/without dead code.
+BlacklistedPlugin					Assembly					Checks for usage of Blacklisted Assemblies.
+ComplexityPlugin					Assembly					Calculates the McGabe's Cyclomatic Complexity.
+InterfaceDetectionPlugin			Assembly					Detects RCSAA Interfaces used.
+LocPlugin							Assembly					Calculates a few Lines Of Code metrics	
+PublicApiDetectionPlugin			Assembly					Lists all public methods of an Assembly. 
+-----------------------------------	---------	--------------	--------------------------
+
+Repositories
+            
+//git1a,git1b,git1c,git1d,git1e,
+//git2a,git2b,git2c,git2d,git2e,
+//git3a,git3b,
+//git4a,git4b,
+//git5a,
+//prj1,dll1,sln1,sln2,sln3,sln4,
+//git6a,
+//git7a,
+//git8a,
+
+//! TEST
+//private const String prj1 = @"C:\Temp\HatAsset\TwoA\TwoA.csproj";
+//private const String dll1 = @"C:\Temp\NuGet\ClientSideGameStorageAsset\GameStorageClientAsset\bin\Debug\GameStorageClientAsset.dll";
+//private const String sln1 = @"C:\Temp\NuGet\ClientSideGameStorageAsset\GameStorageClientAsset.sln";
+//private const String sln2 = @"C:\Temp\NuGet\EmotionDetectionAsset\EmotionDetectionAsset.sln";
+//private const String sln3 = @"C:\Temp\NuGet\HatAsset\TwoA.sln";
+//private const String sln4 = @"Dummy.sln";
+//! OUNL
+//private const String git1a = "https://github.com/rageappliedgame/ClientSideGameStorageAsset.git";
+//private const String git1b = "https://github.com/rageappliedgame/HatAsset.git";
+//private const String git1c = "https://github.com/rageappliedgame/EmotionDetectionAsset.git";
+//private const String git1d = @"C:\temp\NuGet\ClientSideGameStorageAsset\";
+//private const String git1e = @"C:\temp\NuGet\FormulaAsset\";
+//! TUGRaz
+//private const String git2a = "https://github.com/RAGE-TUGraz/CognitiveInterventionAsset.git";
+//private const String git2b = "https://github.com/RAGE-TUGraz/CompetenceBasedAssets.git";
+//private const String git2c = "https://github.com/RAGE-TUGraz/EvaluationAsset.git";
+//private const String git2d = "https://github.com/RAGE-TUGraz/MotivationBasedAssets.git";
+//private const String git2e = "https://github.com/RAGE-TUGraz/PlayerProfilingAsset.git";
+//! TODO UCM Tracker (with subrepos)
+//! INESC
+//private const String git3a = "https://bitbucket.org/L2F-INESCID/speechio.GIT";
+//private const String git3b = "https://github.com/GAIPS-INESC-ID/FAtiMA-Toolkit.git";
+//! Sofia
+//private const String git4a = "https://github.com/ddessy/PlayerCentricRuleBasedAdaptation.git";
+//private const String git4b = "https://github.com/ddessy/RealTimeArousalDetectionUsingGSR.GIT";
+//! UU
+//private const String git5a = "https://github.com/christyowidiasmoro/BMLNet.GIT";
+//! 3rd party
+//private const String git6a = "https://github.com/goedleIO/sdk_unity.git";
+//! This tool
+//! use 'git clone --single-branch --branch <branch name> host:/dir.git' to clone a single branch (using git 1.7.10+).
+//! or  'git clone --branch <branch name> url',
+//private const String git7a = "http://145.20.132.76/rage/RQAT.git";
+//! e-UCM
+//private const String git8a = "https://github.com/e-ucm/dotnet-tracker.git";

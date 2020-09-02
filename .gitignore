@@ -1,0 +1,25 @@
+################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/CecilTest
+/Interfaces/bin/Debug
+/Interfaces/obj/Debug
+/packages
+/ProjectReaderPlugin/bin/Debug
+/ProjectReaderPlugin/obj/Debug
+/RQAT/bin
+/RQAT/obj
+/DotNetArchitectureChecker1.7.zip
+/myrules.dep
+/Models/bin/Debug
+/Models/obj/Debug
+/Plugins.Shared/bin/Debug/netstandard2.0
+/Plugins.Shared/obj/Debug/netstandard2.0
+/Plugins.Shared/obj
+/Results
+/WixInstaller
+ProjectReaderPlugin/AssemblyPlugins/ComplexityPlugin.cs
+RQAT/Old Code.txt
+RQAT/LcsDiff.cs
